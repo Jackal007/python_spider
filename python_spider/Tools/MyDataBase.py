@@ -2,10 +2,11 @@ import pymysql
 
 class MyDataBase:
     def __init__(self):
-        print("connect to data base......")
-        self.db = pymysql.connect("localhost","root","053062","python_spider" )
+#         print("connect to data base......")
+        self.db = pymysql.connect("localhost","root","root","rubbish_letter",charset='utf8')
         self.cursor = self.db.cursor()
-        print("connect success!")
+        self.db.autocommit(True)
+#         print("connect success!")
 
     def getConn(self):
         return self.db
