@@ -23,7 +23,7 @@ class MailSender():
         self.toAddresses = toAddresses
         
     def getMsgs(self):
-        db = MyDataBase.MyDataBase()
+        db = MyDataBase.MyDataBase(database='rubbish_letter')
         conn = db.getConn()
         executer = db.getExcuter()
         executer.execute('select content from qiushibaike order by id desc limit 1')

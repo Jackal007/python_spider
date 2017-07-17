@@ -2,16 +2,6 @@
 之后可以用数据库存这些东西，然后定期遍历，找最好的user-agent
 '''
 
-headers = {
-    'opera':[
-    {
-     'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)',
-    'Host': 'httpbin.org'
-    },
-    
-           ]
-           }
-
 User-Agent={'opera':['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60',
                      'Opera/8.0 (Windows NT 5.1; U; en)',
                      'Mozilla/5.0 (Windows NT 5.1; U; en; rv:1.8.1) Gecko/20061208 Firefox/2.0.0 Opera 9.50',
