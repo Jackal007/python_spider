@@ -1,4 +1,4 @@
-import requests, os, time
+import requests, os, time, sys
 from bs4 import BeautifulSoup
 
 '''
@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 class BeautyPicDownloader():
     def __init__(self):
-        self.site = 'http://www.27270.com/'
+        self.site = 'http://zhaofuli.mobi/'
         self.directory = 'pics'
         # 创建保存图片用的文件夹
         try:
@@ -23,17 +23,19 @@ class BeautyPicDownloader():
         @content:图片内容
         '''        
         # 保存图片
-        try:
-            with open(self.directory + '/' + name + '.jpg', 'wb') as pic:
-                pic.write(content)
-        except:
-            pass
+        if sys.getsizeof(content) > 20480:
+            print('save picture ', name)
+            try:
+                with open(self.directory + '/' + name + '.jpg', 'wb') as pic:
+                    pic.write(content)
+            except:
+                pass
         
     def getLinks(self, url):
         '''
                         获取当前页面下的所有链接
         '''
-        links=[]
+        links = []
         try:
             r = requests.get(url).content
             Page = BeautifulSoup(r)
@@ -46,25 +48,26 @@ class BeautyPicDownloader():
         '''
                         获取当前页面下的所有图片内容
         '''
-        pics=[]
+        pics, names = [], []
         try:
             r = requests.get(url).content
             Page = BeautifulSoup(r)
-            picurls = [i['src'] for i in Page.select('img')]
-            pics = [requests.get(i).content for i in picurls]
+            names = [i['src'] for i in Page.select('img')]
+            pics = [requests.get(i).content for i in names]
+            names = [i.replace('http://', '').replace('https://', '').replace('/', '_') for i in names]
         except:
             pass
-        return pics
+        return pics, names
     
     def deep(self, url):
         '''
-                        深度优先小爬爬函数
+                    深度优先小爬爬函数
         @url:网址
         '''
         # 先把当前页面的图片保存下来
-        pics = self.getPics(url)
-        for pic in pics :
-            self.savePic(str(time.time()), pic)
+        pics, names = self.getPics(url)
+        for pic, name in zip(pics, names) :
+            self.savePic(name, pic)
         
         links = self.getLinks(url)
         for link in links:
@@ -77,7 +80,6 @@ class BeautyPicDownloader():
         '''
         # 先把当前页面的图片保存下来
         pics = self.getPics(url)
-        print(len(pics))
         for pic in pics :
             self.savePic(str(time.time()), pic)
         
@@ -85,8 +87,8 @@ class BeautyPicDownloader():
         links = self.getLinks(url)
         for link in links:
             # 将链接添加到数组后
-            print(len(self.getLinks(link)))
             links.extend(self.getLinks(link))
+            links = list(set(links))
             pics = self.getPics(url)
             for pic in pics :
                 self.savePic(str(time.time()), pic)
