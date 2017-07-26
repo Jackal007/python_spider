@@ -16,12 +16,12 @@ class MeiziPicDownloader():
         @url:url
                         获取当前链接的页面(顺便去掉没用的东西)
         '''
-#         try:
-        r = requests.get(url).content
-        page = BeautifulSoup(r, from_encoding="GBK")
-        return page
-#         except:
-#             return []
+        try:
+            r = requests.get(url).content
+            page = BeautifulSoup(r, from_encoding="GBK")
+            return page
+        except:
+            return []
     
     def getSets(self, url):
         '''
@@ -29,18 +29,18 @@ class MeiziPicDownloader():
                         获取当前链接的页面下的所有链接
         '''
         links, titles = [], []
-#         try:
-        page = self.getPage(url)
-        # 图片链接
-        for i in page.select('#pins')[0].select('a'):
-            if i.string is not None:
-                if 'http' not in i['href']:
-                    i['href'] = self.site + i['href']
-                links.append(i['href'])
-                titles.append(i.string)
-        return links, titles
-#         except:
-#             return []
+        try:
+            page = self.getPage(url)
+            # 图片链接
+            for i in page.select('#pins')[0].select('a'):
+                if i.string is not None:
+                    if 'http' not in i['href']:
+                        i['href'] = self.site + i['href']
+                    links.append(i['href'])
+                    titles.append(i.string)
+            return links, titles
+        except:
+            return []
             
     def broad(self, url):
         '''
