@@ -1,8 +1,6 @@
-'''
-之后可以用数据库存这些东西，然后定期遍历，找最好的user-agent
-'''
+from random import randint
 
-User-Agent={'opera':['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60',
+headers = {'opera':['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60',
                      'Opera/8.0 (Windows NT 5.1; U; en)',
                      'Mozilla/5.0 (Windows NT 5.1; U; en; rv:1.8.1) Gecko/20061208 Firefox/2.0.0 Opera 9.50',
                      'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 9.50',
@@ -17,3 +15,6 @@ User-Agent={'opera':['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KH
                       'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16',
                       ],
     }
+
+def getHeader():
+    return headers['opera'][0]

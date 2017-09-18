@@ -1,5 +1,5 @@
 import requests, os, time, sys
-from picdownloader import SetDownloader
+from MzituPicdownloader import SetDownloader
 from bs4 import BeautifulSoup
 
 '''

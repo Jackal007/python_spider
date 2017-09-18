@@ -5,6 +5,10 @@ from bs4 import BeautifulSoup
 抓取一个标题下的所有美女图片
 '''
 
+headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60'
+    }
+
 class SetDownloader():
     def __init__(self, number, title):
         self.site = 'http://www.mzitu.com/' + number
@@ -24,7 +28,7 @@ class SetDownloader():
         '''        
         # 保存图片
         if sys.getsizeof(content) > 20480:
-            print('save picture ', name)
+            print('saving picture ', name)
             try:
                 with open(self.directory + '/' + self.title + '/' + name + '', 'wb') as pic:
                     pic.write(content)
@@ -49,18 +53,18 @@ class SetDownloader():
                         获取当前链接的页面下的所有链接
         '''
         links = []
-        try:
-            page = self.getPage(url)
-            for i in page.select('.pagenavi')[0].select('a'):
-                if 'http' not in i['href']:
-                    i['href'] = self.site + i['href']
-                if '上一' in i.span.string \
-                or '下一' in i.span.string:
-                    continue
-                links.append(i['href'])
-            return links
-        except:
-            return []
+#         try:
+        page = self.getPage(url)
+        for i in page.select('.pagenavi')[0].select('a'):
+            if 'http' not in i['href']:
+                i['href'] = self.site + i['href']
+            if '上一' in i.span.string \
+            or '下一' in i.span.string:
+                continue
+            links.append(i['href'])
+        return links
+#         except:
+#             return []
         
     def getPics(self, url):
         '''
@@ -68,17 +72,17 @@ class SetDownloader():
                         获取当前页面下的所有图片的内容
         '''
         pics, names = [], []
-        try:
-            page = self.getPage(url)
-            for i in page.select('.main-image')[0].select('img'):
-                if 'http' not in i['src']:
-                    i['src'] = self.site + i['src']
-                names.append(i['src'])
-            pics = [requests.get(i).content for i in names]
-            names = [i.split('/')[-1] for i in names]
-            return pics, names
-        except:
-            return []
+#         try:
+        picPage = self.getPage(url).select('.main-image')[0]
+        for i in picPage.select('img'):
+            if 'http' not in i['src']:
+                i['src'] = self.site + i['src']
+            pic, name = requests.get(i['src'], headers=headers), i['src'].split('/')[-1]
+            print(pic.status_code)
+            pics.append(pic); names.append(name)
+        return pics, names
+#         except:
+#             return []
             
     def broad(self, url):
         '''
@@ -100,7 +104,6 @@ class SetDownloader():
             # 对保存的链接进行去重，排序
             links = [i for i in set(links)]
             links = sorted(links, key=lambda l:int(l.split('/')[-1]))
-            print(links)
             i += 1
                 
     def start(self):
@@ -109,5 +112,5 @@ class SetDownloader():
         print('over')
     
 if __name__ == '__main__':
-    t = SetDownloader('95084', 'hh')
+    t = SetDownloader('38709', 'hh')
     t.start()

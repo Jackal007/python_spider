@@ -16,5 +16,3 @@ while True:
         print(requests.get(url, proxies=proxies).status_code)
         time.sleep(5)
         time.sleep(0)
-        
-print("一个可以把mzitu.com上所有图片都下载下来的小程序")
